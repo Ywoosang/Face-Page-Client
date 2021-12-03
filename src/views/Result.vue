@@ -2,20 +2,21 @@
   <div class="wrapper">
         <div class="imagePlace">
             <div class="imageBack" @change="HideContainerBackground" style='background-color: rgba(216, 215, 215, 0.473);'>
-            <img :src="resultImgUrl" />
-            결과<!-- 임시 -->
+            <img src="../assets/loading.gif" v-if="!resultImgUrl">
+            <img :src="resultImgUrl" v-else/>
             </div>
         </div>
         <div class="btn-wrapper">
-            <button>다운로드</button>
+            <button @click="downloadStyledImage">다운로드</button>
             <button>공개하기</button>
         </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+ 
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 import router from '../router';
 export default {
     data() {
@@ -24,21 +25,20 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getOriginalImageUrl','getStyleImageUrl'])
+        ...mapGetters(['getStyleImageName','getOriginalImageName'])
     },
     async created() {
-        // get요청
-        // resultImgUrl <= res
-        if(!this.getOriginalImageUrl || !this.getStyleImageUrl) {
+        if(!this.getStyleImageName || !this.getOriginalImageName) {
             alert('이미지가 없습니다')
             return router.go(-1);
         }
         const response = await axios.post('http://localhost:5000/api/image/fit',{
-            original: this.getOriginalImageUrl,
-            style: this.getStyleImageUrl
+            original: this.getOriginalImageName,
+            style: this.getStyleImageName
         })
-
+        
         this.resultImgUrl = response.data.url;
+
     },
     methods: {
         HideContainerBackground() {
@@ -63,13 +63,15 @@ export default {
 }
 .imagePlace .imageBack {
   width: 400px;
-  height: 450px;
+  height: 400px;
   text-align: center;
   color: rgb(102, 102, 102);
   font-style: italic;
 }
 .imagePlace img {
-  object-fit: contain; /* 이미지가 컨테이너의 사이즈와 맞지 않을 경우, 가로세로 비율을 유지한 채 여백을 남김 */
+    width: 400px;
+  height: 400px;
+  object-fit: cover; /* 이미지가 컨테이너의 사이즈와 맞지 않을 경우, 가로세로 비율을 유지한 채 여백을 남김 */
 }
 
 .fileInput-wrapper {
