@@ -8,9 +8,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import router from 'vue-router';
 import InputImage from '../components/InputImage.vue';
 import SearchImage from '../components/SearchImage.vue';
+import router from '../router'
 
 export default {
     components: {
