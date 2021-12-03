@@ -14,15 +14,31 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { mapGetters } from 'vuex';
+import router from '../router';
 export default {
     data() {
         return {
             resultImgUrl: ""
         }
     },
-    created() {
+    computed: {
+        ...mapGetters(['getOriginalImageUrl','getStyleImageUrl'])
+    },
+    async created() {
         // get요청
         // resultImgUrl <= res
+        if(!this.getOriginalImageUrl || !this.getStyleImageUrl) {
+            alert('이미지가 없습니다')
+            return router.go(-1);
+        }
+        const response = await axios.post('http://localhost:5000/api/image/fit',{
+            original: this.getOriginalImageUrl,
+            style: this.getStyleImageUrl
+        })
+
+        this.resultImgUrl = response.data.url;
     },
     methods: {
         HideContainerBackground() {
