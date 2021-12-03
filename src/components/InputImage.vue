@@ -5,7 +5,7 @@
             <div class="imagePlace">
                 <div class="imageBack" @change="HideContainerBackground" style='background-color: rgba(216, 215, 215, 0.473);'>
                 <img :src="originalImgUrl" v-if="originalImgUrl"/>
-                your photo
+                original
                 </div>
             </div>
 
@@ -75,10 +75,9 @@ export default {
                 );
                 // 비동기 병렬처리
                 console.log(response.data)
-                console.log(originalImageUrl,originalImageName)
                 const originalImageUrl = response.data.url;
                 const originalImageName = response.data.filename;
- 
+                 console.log(originalImageUrl,originalImageName)
                 this.originalImgUrl = originalImageUrl;
                 this.originalImgName = originalImageName;
                 this.$store.commit("setOriginalImageUrl", originalImageUrl);
