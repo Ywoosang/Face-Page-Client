@@ -10,12 +10,12 @@
       </div>
       <div class="banner-item">
         <div class="banner-textBox">
-          <p style="font-size:1.2rem; font-weight:bold; text-align: right;">서비스 이름</p>
-          <p style="font-size:0.9rem; text-align: right;">자신의 얼굴을 여러가지 캐릭터로 변신해보세요. </p>
+          <p style="font-size:1.2rem; font-weight:bold; text-align: right;">FAGE</p>
+          <p style="font-size:0.9rem; text-align: right;">원하는 사진을 마음대로 합성해 보세요.</p>
         </div>
         <div class="banner-btnBox">
           <router-link to='/upload'>
-            <button>적용하러 가기 → 🤓</button>
+            <button>적용하러 가기 🤓</button>
           </router-link>
         </div>
       </div>  
