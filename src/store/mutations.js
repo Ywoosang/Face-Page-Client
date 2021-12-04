@@ -10,5 +10,15 @@ export default {
     },
     setStyleImageName(state, filename) {
         return state.styleImageName = filename;
-    }
+    },
+    setAppliedImageName(state, filename) {
+        return state.styleImageName = filename;
+    },
+    setManipulatedImage(state, payload) {
+        state.manipulatedImageName = payload.filename;
+        state.manipulatedImageKey = payload.key;
+    },
+    setAuth(state, isAuth) {
+        return state.isAuth = isAuth;
+    },
 }
