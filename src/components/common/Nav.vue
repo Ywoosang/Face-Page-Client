@@ -4,9 +4,11 @@
       <!-- logo -->
       <div class="logo">
         <router-link to="/" class="router-design">
-          서비스 로고
+           <img src="../../assets/img/logo.png">
         </router-link>
+        
       </div>
+       <router-link to='/login' class='router-design'>로그인</router-link>
     </div>
   </nav>
 </template>
@@ -36,9 +38,12 @@ export default {
   margin: 0 5rem;
 }
 .nav-wrapper .logo{
-  display: flex;
-  align-items: center;
+
   padding-left: 1.5rem;
+}
+.nav-wrapper .logo img{
+  object-fit: contain;
+  height: 50px;
 }
 .nav-wrapper .menu-list ul{
   list-style-type: none; 
