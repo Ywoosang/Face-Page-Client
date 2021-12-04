@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
         <div class="imagePlace">
-            <div class="imageBack" @change="HideContainerBackground" style='background-color: rgba(216, 215, 215, 0.473);'>
+            <div class="imageBack">
             <img src="../assets/loading.gif" v-if="!resultImgUrl">
             <img :src="resultImgUrl" v-else/>
             </div>
         </div>
         <div class="btn-wrapper">
-            <button @click="downloadStyledImage">다운로드</button>
+            <a :href="resultImgUrl" download>다운로드</a>
             <button>공개하기</button>
         </div>
   </div>
@@ -25,7 +25,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getStyleImageName','getOriginalImageName'])
+        ...mapGetters(['getStyleImageName','getOriginalImageName','getManipulatedImageKey','getManipulatedImageName'])
     },
     async created() {
         if(!this.getStyleImageName || !this.getOriginalImageName) {
@@ -36,15 +36,22 @@ export default {
             original: this.getOriginalImageName,
             style: this.getStyleImageName
         })
-        
-        this.resultImgUrl = response.data.url;
 
+        this.resultImgUrl = response.data.url;
+        const payload = {
+            key: response.data.key ,
+            filename: response.data.filename
+        }
+        this.$store.commit('setManipulatedImage',payload)
     },
     methods: {
-        HideContainerBackground() {
-            const imageBack = document.querySelector('.imageBack');
-            imageBack.style.backgroundColor = 'white';
-        },
+        async downloadStyledImage(){
+            await axios.post('http://localhost:5000/api/image/fit',{
+            key: this.getManipulatedImageKey,
+            filename: this.getManipulatedImageName,
+            mimetype: 'image/png'
+            })
+        }
     }
 }
 </script>
@@ -71,7 +78,7 @@ export default {
 .imagePlace img {
     width: 400px;
   height: 400px;
-  object-fit: cover; /* 이미지가 컨테이너의 사이즈와 맞지 않을 경우, 가로세로 비율을 유지한 채 여백을 남김 */
+  object-fit: contain; /* 이미지가 컨테이너의 사이즈와 맞지 않을 경우, 가로세로 비율을 유지한 채 여백을 남김 */
 }
 
 .fileInput-wrapper {
