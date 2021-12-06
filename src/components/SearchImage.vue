@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import * as request from '../api/image';
 
 export default {
   data() {
@@ -43,16 +43,8 @@ export default {
       try {
         if (!this.keyword.trim()) alert("키워드를 입력해 주세요");
         this.images = [[], [], []];
-        var API_KEY = "24671242-bc822ff4f2559709a2b12cc7b";
-        var URL =
-          "https://pixabay.com/api/?key=" +
-          API_KEY +
-          "&q=" +
-          encodeURIComponent(this.keyword);
-        const response = await axios.get(URL);
-        const images = response.data.hits;
-        console.log(images)
-        console.log(images.length);
+        const response = await request.getPixabayImage(this.keyword);
+        const images = response.data.images;
         if(images.length == 0) {
           this.contentNotFound = true;
         } else  {
