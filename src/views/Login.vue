@@ -2,23 +2,23 @@
   <div class="login">
     <div class="login-container">
         <div class="login-logo">
-            <img src="../assets/img/logo.png">
+            <img src="../assets/img/logo-letter.png">
         </div>
         <button class="login-btn" style="background-color:#fce51e; ">
             <img src="../assets/img/kakaotalk_login.png" style="width:17px; margin-right: 7px;">
-            <span style="color: rgb(59,29,20);">카카오톡으로 로그인</span>
+            <a :href="baseUrl+'/api/auth/kakao'" style="color: rgb(59,29,20);">카카오톡으로 로그인</a>
         </button>
         <button class="login-btn" style="background-color:#01c73c; ">
             <img src="../assets/img/naver_login.png" style="width:25px; margin-right: 2px;">
-            <span style="color: white;">네이버로 로그인</span>
+            <a :href="baseUrl+'/api/auth/naver'" style="color: white;">네이버로 로그인</a>
         </button>
         <button class="login-btn" style="background-color:#efefef;">
             <img src="../assets/img/google_login.png" style="width:17px; margin-right: 7px;">
-            <span style="color: black;">구글로 로그인</span>
+            <a :href="baseUrl+'/api/auth/google'" style="color: black;">구글로 로그인</a>
         </button>
         <button class="login-btn" style="background-color: black;">
             <img src="../assets/img/github_login.png" style="width:17px; margin-right: 7px;">
-            <span style="color: white;">Github로 로그인</span>
+            <a :href="baseUrl+'/api/auth/github'" style="color: white;">Github로 로그인</a>
         </button>
         <p class="space_or">
             <span>또는</span>
@@ -35,7 +35,7 @@
             <span style="color: black;">로그인</span>
         </button>
         <div class="join-btn">
-            <span>회원가입</span>
+            <router-link class="signup" to="/signup">회원가입</router-link>
         </div>
     </div>
   </div>
@@ -44,17 +44,20 @@
 <script>
 import { signIn } from '../api/auth';  
 import router from '../router';
+import { mapActions } from 'vuex';
 export default {
     data(){
         return {
             email: '',
-            password: ''
+            password: '',
+            baseUrl : process.env.VUE_APP_BASE_URL
         }
     },
-    created(){
-
-    },
+     async created() {
+      await this.isAuthenticated();
+  },
     methods : {
+           ...mapActions(['isAuthenticated']),
         async login(){
             try {
                 const userData = {
@@ -71,7 +74,7 @@ export default {
 }
 </script>
 
-<style>
+<style scopped>
 .login {
     height: 100%;
     display: flex;
@@ -108,6 +111,7 @@ export default {
     align-items: center;
     justify-content: center;
 }
+
 .space_or {
     height: 30px;
     margin: 0 0 8px 0;
@@ -150,5 +154,10 @@ export default {
     padding: 10px 0;
     font-size: 0.8rem;
     text-align: center;
+}
+.join-btn a{
+    color: #000;
+    
+
 }
 </style>
