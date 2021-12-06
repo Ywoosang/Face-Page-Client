@@ -1,21 +1,22 @@
 <template>
   <div class="wrapper">
-        <div class="imagePlace">
-            <div class="imageBack">
-            <img src="../assets/loading.gif" v-if="!resultImgUrl">
-            <img :src="resultImgUrl" v-else/>
-            </div>
-        </div>
-        <div class="btn-wrapper">
-            <a :href="resultImgUrl" download>다운로드</a>
-            <button>공개하기</button>
-        </div>
+    <div class="imagePlace">
+      <div class="imageBack">
+        <img src="../assets/loading.gif" v-if="!getManipulatedImageUrl" />
+        <img :src="getManipulatedImageUrl" v-else />
+      </div>
+    </div>
+    <div class="btn-wrapper">
+      <a :href="getManipulatedImageUrl" download>다운로드</a>
+      <button @click="registerPost">공개하기</button>
+    </div>
   </div>
 </template>
 
 <script>
  
 import { mapGetters } from 'vuex';
+import { registerNewPost } from '../api/post';
 import axios from 'axios';
 import router from '../router';
 export default {
@@ -25,7 +26,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getStyleImageName','getOriginalImageName','getManipulatedImageKey','getManipulatedImageName'])
+        ...mapGetters(['getStyleImageName','getOriginalImageName','getOriginalImageUrl','getStyleImageUrl','getManipulatedImageUrl'])
     },
     async created() {
         if(!this.getStyleImageName || !this.getOriginalImageName) {
@@ -36,21 +37,25 @@ export default {
             original: this.getOriginalImageName,
             style: this.getStyleImageName
         })
-
-        this.resultImgUrl = response.data.url;
-        const payload = {
-            key: response.data.key ,
-            filename: response.data.filename
-        }
-        this.$store.commit('setManipulatedImage',payload)
+        this.$store.commit('setManipulatedImage',response.data.url)
     },
     methods: {
-        async downloadStyledImage(){
-            await axios.post('http://localhost:5000/api/image/fit',{
-            key: this.getManipulatedImageKey,
-            filename: this.getManipulatedImageName,
-            mimetype: 'image/png'
-            })
+        async registerPost(){  
+            try{
+                const data = {
+                    originalUrl: this.getOriginalImageUrl,
+                    styleUrl: this.getStyleImageUrl,
+                    styleKey: this.getStyleImageName,
+                    manipulatedUrl: this.getManipulatedImageUrl
+                }
+                await registerNewPost(data);
+                await router.push({ path: '/'});
+            } catch(error){
+                if(error.response.status == 403){
+                    alert('로그인 해 주세요');
+                    await router.push({ path:'/login'});
+                } 
+            }
         }
     }
 }
@@ -58,12 +63,12 @@ export default {
 
 <style scoped>
 .wrapper {
-    /* width: 30%; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 15px;
-    margin-right: 15px;
+  /* width: 30%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .wrapper .imagePlace {
   margin: 50px 0 20px 0;
@@ -76,7 +81,7 @@ export default {
   font-style: italic;
 }
 .imagePlace img {
-    width: 400px;
+  width: 400px;
   height: 400px;
   object-fit: contain; /* 이미지가 컨테이너의 사이즈와 맞지 않을 경우, 가로세로 비율을 유지한 채 여백을 남김 */
 }
@@ -87,10 +92,10 @@ export default {
 }
 
 .btn-wrapper {
-    display: flex;
+  display: flex;
 }
 .btn-wrapper button {
-    margin-left: 15px;
-    margin-right: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 </style>
