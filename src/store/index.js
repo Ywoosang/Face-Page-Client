@@ -4,11 +4,13 @@ import Vuex from "vuex";
 import mutations from './mutations'; 
 import state from './state';
 import getters from './getters';
+import actions from './actions';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state,
   mutations,
-  getters
+  getters,
+  actions
 });
