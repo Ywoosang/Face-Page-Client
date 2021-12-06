@@ -7,11 +7,18 @@ import { store } from './store';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 library.add(faEnvelope);
 library.add(faLock);
+library.add(faMagnifyingGlass);
+library.add(faDownload);
+library.add(faTrash);
+library.add(faUser);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 //router
 Vue.use(VueRouter);

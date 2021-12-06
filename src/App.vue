@@ -17,8 +17,11 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
 * {
   /* border: 1px solid red; */
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 html {
@@ -34,5 +37,9 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+a{
+  text-decoration: none;
 }
 </style>
