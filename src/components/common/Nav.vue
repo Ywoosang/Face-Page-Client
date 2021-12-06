@@ -8,14 +8,36 @@
         </router-link>
         
       </div>
-       <router-link to='/login' class='router-design'>로그인</router-link>
+       <router-link to='/login' class='router-design' v-if="!isAuth">로그인</router-link>
+       <a @click="logout" class='router-design' v-else>로그아웃</a>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { signOut } from '../../api/auth';
+import router from '../../router';
 export default {
     name: 'NavBar',
+    data(){
+      return {
+        logoutUrl : process.env.VUE_APP_BASE_URL + '/api/auth/signout'
+      }
+    },
+    computed: {
+      ...mapState(['isAuth'])
+    },
+    methods: {
+      async logout(){
+        try{
+          await signOut();
+          await router.push({path:'/login'})
+        }catch (error){
+          console.log(error)
+        }
+      }
+    },
 }
 </script>
 
@@ -62,6 +84,7 @@ export default {
 
 .router-design {
   color: rgb(137, 141, 148);
+  cursor:pointer;
   /* a태그의 밑줄 없앰 */
   text-decoration: none;
 }
