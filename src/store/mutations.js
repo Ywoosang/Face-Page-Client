@@ -14,9 +14,8 @@ export default {
     setAppliedImageName(state, filename) {
         return state.styleImageName = filename;
     },
-    setManipulatedImage(state, payload) {
-        state.manipulatedImageName = payload.filename;
-        state.manipulatedImageKey = payload.key;
+    setManipulatedImage(state, url) {
+        state.manipulatedImageUrl = url;
     },
     setAuth(state, isAuth) {
         return state.isAuth = isAuth;

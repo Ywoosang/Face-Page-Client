@@ -11,10 +11,8 @@ export default {
     getStyleImageUrl(state) {
       return state.styleImageUrl;
     },
-    getManipulatedImageKey(state) {
-      return state.manipulatedImageKey;
-    },
-    getManipulatedImageName(state) {
-      return state.manipulatedImageName;
+    getManipulatedImageUrl(state) {
+      return state.manipulatedImageUrl;
     }
+    
   }

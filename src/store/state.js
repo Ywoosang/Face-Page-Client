@@ -3,7 +3,6 @@ export default {
     originalImageName: '',
     styleImageUrl:'',
     styleImageName: '',
-    manipulatedImageName: '',
-    manipulatedImageKey: '',
+    manipulatedImageUrl: '',
     isAuth: false
 }
