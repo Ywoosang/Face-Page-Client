@@ -2,16 +2,17 @@
   <div class="home">
     <div class="banner">
       <div class="banner-item">
-        <!-- video 자리 -->
-        <span>video</span>
         <video id="video" controls muted="muted" autoplay>
           <source src="http://localhost:3000/video" type="video/mp4">
         </video>
       </div>
       <div class="banner-item">
         <div class="banner-textBox">
-          <p style="font-size:1.2rem; font-weight:bold; text-align: right;">FAGE</p>
-          <p style="font-size:0.9rem; text-align: right;">원하는 사진을 마음대로 합성해 보세요.</p>
+          <p style="font-size:1.2rem; font-weight:bold; text-align: right;"><img src="../assets/img/logo-letter.png"></p>
+          <p style="font-size:0.9rem; text-align: right;">
+            Face Page, Fage에서 <br>
+            원하는 사진에 스타일을 자유롭게 적용해 보세요.
+          </p>
         </div>
         <div class="banner-btnBox">
           <router-link to='/upload'>
@@ -20,18 +21,27 @@
         </div>
       </div>  
     </div>
-    
-    <brick-board />
+    <brick-board/>
   </div>
 </template>
 
 <script>
 import BrickBoard from '../components/BrickBoard.vue';
+import { mapActions,mapMutations } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
     BrickBoard,
+  },
+  methods: {
+    ...mapActions(['isAuthenticated']),
+    ...mapMutations(['setManipulatedImage'])
+  },
+  async created() {
+      await this.isAuthenticated();
+      this.setManipulatedImage('');
+
   }
 }
 </script>
@@ -46,33 +56,41 @@ export default {
 }
 .banner {
   display: grid; 
-  grid-template-columns: 1.2fr 1fr;
-  /* border: 1px solid blue; */
+  grid-template-columns: 1.4fr 1fr;
   padding: 30px 30px;
-  width: 65%;
+  width: 70%;
   grid-gap: 2rem;
   margin-top: 2rem;
 }
-.banner-item {
-  /* border: 1px solid red; */
+
+.banner-item video {
+  width: inherit;
 }
+
 .banner-item:nth-child(2) {
   text-align: right;
   padding-right: 2rem;
 }
 .banner-textBox {
-  /* border: 1px solid blue; */
   margin-top: 7rem;
 }
+
+.banner-textBox p img{
+    width:4em;
+    object-fit: contain;
+}
+
 .banner-btnBox {
-  /* border: 1px solid blue; */
   margin-top: 3rem;
   margin-bottom: 4rem;
 }
+
 .banner-item:nth-child(1) {
   width: 100%;
   height: 100%;
-  border: 1px solid black;  
+  display: flex;
+  align-items: center;
+
 }
 
 </style>
