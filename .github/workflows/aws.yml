@@ -17,12 +17,14 @@ jobs: # jobs
       - name: build # 
         run: npm run build # code build 
       
+      - name: remove s3 files
+        env:
+          AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}' 
+          AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}' 
+        run: aws s3 rm --region ap-northeast-2 s3://fage-front --recursive
+      
       - name: deploy # 배포 
         env:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}' 
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}' 
-        run: | 
-          aws s3 cp \ 
-            --recursive \ 
-            --region ap-northeast-2 \ 
-            dist s3://fage-front
+        run: aws s3 cp --region ap-northeast-2 dist/ s3://fage-front --recursive
