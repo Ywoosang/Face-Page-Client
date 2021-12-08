@@ -17,7 +17,8 @@
  
 import { mapGetters } from 'vuex';
 import { registerNewPost } from '../api/post';
-import axios from 'axios';
+import { manipulateImage } from '../api/image';
+ 
 import router from '../router';
 export default {
     data() {
@@ -33,10 +34,11 @@ export default {
             alert('이미지가 없습니다')
             return router.go(-1);
         }
-        const response = await axios.post('http://localhost:5000/api/image/fit',{
+        const data = {
             original: this.getOriginalImageName,
             style: this.getStyleImageName
-        })
+        }
+        const response = await manipulateImage(data);
         this.$store.commit('setManipulatedImage',response.data.url)
     },
     methods: {

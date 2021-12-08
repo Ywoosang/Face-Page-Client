@@ -15,7 +15,7 @@
         >
           <div class="image" v-for="(image, index) in imageSet" :key="index">
             <img :src="image.largeImageURL">
-            <a :href=" 'http://localhost:8000/api/image/download?url=' +image.webformatURL"><font-awesome-icon icon="fa-solid fa-download" /></a>
+            <a :href=" downloadUrl +image.webformatURL"><font-awesome-icon icon="fa-solid fa-download" /></a>
           </div>
         </div>
       </div>
@@ -34,7 +34,8 @@ export default {
       urls: [],
       keyword: "",
       images: [[], [], []],
-      contentNotFound: false
+      contentNotFound: false,
+      downloadUrl : process.env.VUE_APP_BASE_URL + "/api/image/download?url="
     };
   },
   components: {},
