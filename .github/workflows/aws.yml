@@ -1,11 +1,13 @@
-name: Main CI # action 명 \
+name: Deploy to Amazon S3 #  action 명
+
 on: # 이벤트 트리거 
   push: # push event에 반응
     branches: # github repository의 branch가 
       - main # master 일 경우만 
       
 jobs: # jobs 
-  build: # GitHub-hosted runners env 
+  deploy: # GitHub-hosted runners env 
+    name: Deploy
     runs-on: ubuntu-latest # using Ubuntu 18.04 LTS 
     steps: # steps 
       - name: git clone # 
