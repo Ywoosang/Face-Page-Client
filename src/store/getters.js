@@ -13,6 +13,9 @@ export default {
     },
     getManipulatedImageUrl(state) {
       return state.manipulatedImageUrl;
+    },
+    getAuthStatus(state){
+      return state.isAuth;
     }
-    
+     
   }

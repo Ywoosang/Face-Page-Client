@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import * as request from'../api/image';
+import axios from "axios";
 
 export default {
   data() {
@@ -74,8 +74,10 @@ export default {
         //   console.log(originalImg,this.$refs.originalImg)      
           this.originalImgName = originalImg.name;
           originalData.append("image", originalImg);
-          request.up
-          const response = await request.uploadImage(originalData);
+          const response = await axios.post(
+            "http://localhost:8000/api/image/upload",
+            originalData
+          );
           const originalImageUrl = response.data.url;
           const originalImageName = response.data.filename;
           this.originalImgUrl = originalImageUrl;
@@ -97,7 +99,10 @@ export default {
           const styleImg = this.$refs.styleImg.files[0];
           this.styleImgName =  styleImg.name;
           styleData.append("image", styleImg);
-          const response = await request.uploadImage(styleData);
+          const response = await axios.post(
+            "http://localhost:8000/api/image/upload",
+            styleData
+          );
           const styleImageUrl = response.data.url;
           const styleImageName = response.data.filename;
           this.styleImgUrl = styleImageUrl;

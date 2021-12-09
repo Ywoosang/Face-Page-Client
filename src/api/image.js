@@ -15,7 +15,7 @@ export const uploadImage = async(data) =>
 
 export const manipulateImage = async(data) => 
     request({
-        url: "/api/image/fit",
+        url: "/model/fit",
         method: "POST",
         data
     })

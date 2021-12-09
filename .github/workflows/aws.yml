@@ -1,32 +1,32 @@
 name: Deploy to Amazon S3 #  action 명
 
-on: # 이벤트 트리거 
+on:
   push: # push event에 반응
-    branches: # github repository의 branch가 
-      - main # master 일 경우만 
+    branches:  
+      - main 
       
 jobs: # jobs 
-  deploy: # GitHub-hosted runners env 
+  deploy:
     name: Deploy
-    runs-on: ubuntu-latest # using Ubuntu 18.04 LTS 
+    runs-on: ubuntu-latest
     steps: # steps 
-      - name: git clone # 
-        uses: actions/checkout@v2 # 
+      - name: git clone
+        uses: actions/checkout@v2
         
-      - name: npm install # 
-        run: npm install # npm install \
+      - name: npm install 
+        run: npm install # npm instal
         
       - name: build # 
         run: npm run build # code build 
-      
-      - name: remove s3 files
+       
+      - name: remove s3 files # 기존 파일 삭제
         env:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}' 
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}' 
-        run: aws s3 rm --region ap-northeast-2 s3://fage-front --recursive
+        run: aws s3 rm --region ap-northeast-2 s3://facepage.ml --recursive
       
       - name: deploy # 배포 
         env:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}' 
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}' 
-        run: aws s3 cp --region ap-northeast-2 dist/ s3://fage-front --recursive
+        run: aws s3 cp --region ap-northeast-2 dist/ s3://facepage.ml --recursive

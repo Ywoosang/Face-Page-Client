@@ -6,8 +6,8 @@
         <img :src="getManipulatedImageUrl" v-else />
       </div>
     </div>
-    <div class="btn-wrapper">
-      <a :href="getManipulatedImageUrl" download>다운로드</a>
+    <div class="btn-wrapper" v-if="getManipulatedImageUrl">
+      <a :href="getManipulatedImageUrl" class="download" download>다운로드</a>
       <button @click="registerPost">공개하기</button>
     </div>
   </div>
@@ -17,29 +17,33 @@
  
 import { mapGetters } from 'vuex';
 import { registerNewPost } from '../api/post';
-import { manipulateImage } from '../api/image';
- 
+import axios from 'axios';
 import router from '../router';
 export default {
-    data() {
-        return {
-            resultImgUrl: ""
-        }
-    },
     computed: {
         ...mapGetters(['getStyleImageName','getOriginalImageName','getOriginalImageUrl','getStyleImageUrl','getManipulatedImageUrl'])
     },
     async created() {
-        if(!this.getStyleImageName || !this.getOriginalImageName) {
+        try{
+            if(!this.getStyleImageName || !this.getOriginalImageName) {
             alert('이미지가 없습니다')
             return router.go(-1);
+          }
+          const response = await axios.post('http://localhost:5000/model/fit',{
+              original: this.getOriginalImageName,
+              style: this.getStyleImageName
+          })
+          this.$store.commit('setManipulatedImage',response.data.url)
+        } catch(error){
+          if(error.response) {
+            if(error.response.status == 400){
+              alert(error.response.data.message);
+            }
+          } else {
+            console.log(error);
+          }
         }
-        const data = {
-            original: this.getOriginalImageName,
-            style: this.getStyleImageName
-        }
-        const response = await manipulateImage(data);
-        this.$store.commit('setManipulatedImage',response.data.url)
+       
     },
     methods: {
         async registerPost(){  
@@ -53,10 +57,16 @@ export default {
                 await registerNewPost(data);
                 await router.push({ path: '/'});
             } catch(error){
-                if(error.response.status == 403){
+              if(error.response){
+                 if(error.response.status == 401){
                     alert('로그인 해 주세요');
                     await router.push({ path:'/login'});
                 } 
+              } else {
+                console.log(error);
+                alert(error);
+              }
+                
             }
         }
     }
@@ -96,6 +106,18 @@ export default {
 .btn-wrapper {
   display: flex;
 }
+
+.btn-wrapper .download{
+  border: 1px solid black;
+  background : rgb(250, 250, 250);
+  border-radius: 2px;
+  padding: 0 3px;
+  color:rgb(0, 0, 0);
+}
+.btn-wrapper .download:hover{
+   background-color: rgb(240, 240, 240);
+}
+
 .btn-wrapper button {
   margin-left: 15px;
   margin-right: 15px;

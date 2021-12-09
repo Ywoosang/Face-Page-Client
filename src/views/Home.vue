@@ -3,7 +3,7 @@
     <div class="banner">
       <div class="banner-item">
         <video id="video" controls muted="muted" autoplay>
-          <source src="http://localhost:3000/video" type="video/mp4">
+          <source src="http://localhost:8000/api/video" type="video/mp4">
         </video>
       </div>
       <div class="banner-item">

@@ -6,7 +6,6 @@
           class="post"
           v-for="(post, index) in postSet"
           :key="index"
-          @click="applyStyle(post)"
         >
           <div class="delete" @click="deletePost(post.id,post.user.id)">
             <font-awesome-icon icon="fa-solid fa-trash" />

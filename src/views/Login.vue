@@ -44,17 +44,24 @@
 <script>
 import { signIn } from '../api/auth';  
 import router from '../router';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
     data(){
         return {
             email: '',
             password: '',
             baseUrl : process.env.VUE_APP_BASE_URL
+
         }
     },
-     async created() {
+    computed: {
+        ...mapGetters(['getAuthStatus'])
+    },
+    async created() {
       await this.isAuthenticated();
+      if(this.getAuthStatus){
+          await router.push('/')
+      }
   },
     methods : {
            ...mapActions(['isAuthenticated']),
@@ -67,7 +74,12 @@ export default {
                 await signIn(userData);
                 await router.push('/');
             } catch(error) {
-                alert('로그인 실패');
+                if(error.response){
+                    console.log(error.response)
+                    alert(error.response.data.message);
+                } else {
+                    console.log(error);
+                }
             }
         }
     }
