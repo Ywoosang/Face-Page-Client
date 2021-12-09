@@ -17,8 +17,8 @@
  
 import { mapGetters } from 'vuex';
 import { registerNewPost } from '../api/post';
-import axios from 'axios';
 import router from '../router';
+import * as request from '../api/image';
 export default {
     computed: {
         ...mapGetters(['getStyleImageName','getOriginalImageName','getOriginalImageUrl','getStyleImageUrl','getManipulatedImageUrl'])
@@ -29,7 +29,7 @@ export default {
             alert('이미지가 없습니다')
             return router.go(-1);
           }
-          const response = await axios.post('http://localhost:5000/model/fit',{
+          const response = await request.manipulateImage({
               original: this.getOriginalImageName,
               style: this.getStyleImageName
           })
