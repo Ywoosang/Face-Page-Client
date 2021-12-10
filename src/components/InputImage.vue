@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import request from "../api/image";
+import * as request from "../api/image";
 
 export default {
   data() {
