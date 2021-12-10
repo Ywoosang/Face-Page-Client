@@ -55,7 +55,6 @@ export default {
   async created() {
     const response = await getAllPosts();
     const posts = response.data.posts;
-    console.log(posts);
     for (let i = 0; i < posts.length; i++) {
       this.posts[i % 3].push(posts[i]);
     }

@@ -10,7 +10,7 @@
           <img :src="originalImgUrl" v-if="originalImgUrl" />
           <span v-else>original</span>
         </div>
-        <p class="imageName">{{ originalImgName}}</p>
+        <p class="imageName">{{ originalImgName }}</p>
       </div>
 
       <!-- 로컬에서 사진 업로드 -->
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import request from "../api/image";
 
 export default {
   data() {
@@ -71,20 +71,17 @@ export default {
         if (this.$refs.originalImg.files.length > 0) {
           const originalData = new FormData();
           const originalImg = this.$refs.originalImg.files[0];
-        //   console.log(originalImg,this.$refs.originalImg)      
+          //   console.log(originalImg,this.$refs.originalImg)
           this.originalImgName = originalImg.name;
           originalData.append("image", originalImg);
-          const response = await axios.post(
-            "http://localhost:8000/api/image/upload",
-            originalData
-          );
+          const response = await request.uploadImage(originalData);
           const originalImageUrl = response.data.url;
           const originalImageName = response.data.filename;
           this.originalImgUrl = originalImageUrl;
           this.$store.commit("setOriginalImageUrl", originalImageUrl);
           this.$store.commit("setOriginalImageName", originalImageName);
-           const imageBack = document.querySelector(".originalImageBack");
-      imageBack.style.backgroundColor = "white";
+          const imageBack = document.querySelector(".originalImageBack");
+          imageBack.style.backgroundColor = "white";
         } else {
           return alert("파일을 업로드해 주세요");
         }
@@ -97,12 +94,9 @@ export default {
         if (this.$refs.styleImg.files.length > 0) {
           const styleData = new FormData();
           const styleImg = this.$refs.styleImg.files[0];
-          this.styleImgName =  styleImg.name;
+          this.styleImgName = styleImg.name;
           styleData.append("image", styleImg);
-          const response = await axios.post(
-            "http://localhost:8000/api/image/upload",
-            styleData
-          );
+          const response = await request.uploadImage(styleData);
           const styleImageUrl = response.data.url;
           const styleImageName = response.data.filename;
           this.styleImgUrl = styleImageUrl;
@@ -136,7 +130,8 @@ export default {
 .wrapper .imagePlace {
   margin: 30px 0 20px 0;
 }
-.wrapper .imagePlace .styleImageBack, .wrapper .imagePlace .originalImageBack {
+.wrapper .imagePlace .styleImageBack,
+.wrapper .imagePlace .originalImageBack {
   width: 290px;
   height: 290px;
   text-align: center;
@@ -148,9 +143,9 @@ export default {
   height: 290px;
   object-fit: contain; /* 이미지가 컨테이너의 사이즈와 맞지 않을 경우, 가로세로 비율을 유지한 채 여백을 남김 */
 }
-.wrapper .imagePlace .imageName{
-    text-align: center;
-    margin:0;
+.wrapper .imagePlace .imageName {
+  text-align: center;
+  margin: 0;
 }
 
 .wrapper .fileInput-wrapper {
